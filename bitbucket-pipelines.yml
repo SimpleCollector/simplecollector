@@ -1,0 +1,31 @@
+# This is a sample build configuration for Java Gradle.
+# Check our guides at https://confluence.atlassian.com/x/5Q4SMw for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: java:8
+
+pipelines:
+  default:
+    - step:
+        caches:
+          - gradle
+        script:
+#          - ./gradlew clientInstall
+          - curl --user "${BB_AUTH_STRING}" -O -L "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/simplecollector-gui/downloads/simplecollector-gui-dist.tgz"
+          - tar zxvf simplecollector-gui-dist.tgz --directory src/main/resources/static
+          - ./gradlew build
+#          - cp build/libs/simplecollector-master.jar docker/arm64/app.jar
+          - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"build/libs/simplecollector-master.jar"
+          - cp build/libs/simplecollector-master.jar docker/amd64/app.jar
+          - docker login -u $DOCKER_USER -p $DOCKER_PASS
+#          - cd docker/arm64
+#          - docker build -t devhere/simplecollector:arm64 .
+#          - docker push devhere/simplecollector:arm64
+#          - cd ../amd64
+          - cd docker/amd64
+          - docker build -t devhere/simplecollector:amd64 .
+          - docker push devhere/simplecollector:amd64
+          
+options:
+  docker: true

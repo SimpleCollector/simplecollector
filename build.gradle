@@ -1,0 +1,139 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        // Need JCenter for Grgit
+        jcenter()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.5.6.RELEASE"
+        classpath "com.craigburke.gradle:client-dependencies:1.3.1"
+        classpath 'org.ajoberstar:gradle-git:1.7.1'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'com.craigburke.client-dependencies'
+apply plugin: 'org.ajoberstar.grgit'
+
+//import org.ajoberstar.grgit.*
+// Open the Git repository in the current directory.
+//def git = Grgit.open(file('../'))
+
+jar {
+    baseName = 'simplecollector'
+    version = "${grgit.branch.current.name}"
+}
+
+repositories {
+    mavenCentral()
+    //jcenter()
+    maven {
+    	// snmp4j repository
+        url "https://oosnmp.net/dist/release"
+    }
+    maven {
+    	url "http://repo.opennms.org/maven2/"
+    }
+    
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compileOnly("org.springframework.boot:spring-boot-devtools")
+    compile("org.springframework.data:spring-data-mongodb")
+    compile("org.influxdb:influxdb-java:2.5")
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    //compile('com.google.guava:guava:20.0')
+    //compile("org.springframework.boot:spring-boot-starter-actuator")
+    //compile("org.springframework.boot:spring-boot-starter-jdbc")
+    //compile("mysql:mysql-connector-java:5.1.40")
+    //compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:1.2.0")
+    
+    compile group: 'org.soulwing.snmp', name: 'tnm4j', version: '1.0.6', transitive: false
+    // Dependencies of tnm4j are: snmp4j, mibble and mibble-mibs.
+    // The incorrect dependencies in tnm4j are: net.percederberg:mibble-parser:2.9.3 and net.percederberg:mibble-mibs:2.9.3
+    compile("org.snmp4j:snmp4j:2.5.5")
+    compile("net.percederberg.mibble:mibble:2.9.3")
+    compile("net.percederberg.mibble:mibble-mibs:2.9.3")
+    
+}
+
+clientDependencies {
+	installDir = 'src/main/resources/static/lib'
+    fileExtensions = ['css', 'js', 'eot', 'svg', 'ttf', 'woff', 'woff2', 'ts', 'jpg', 'jpeg', 'png', 'gif']
+    releaseFolders = ['dist', 'release', 'build']
+    copyIncludes = []
+    //copyExcludes = ['**/*.min.js', '**/*.min.css', '**/*.map', '**/Gruntfile.js', 'gulpfile.js', 'source/**']
+    copyExcludes = ['**/*.map', '**/Gruntfile.js', 'gulpfile.js', 'source/**']
+
+    npm {
+        // 'restangular'('1.5.0', transitive: false)
+        // 'angular-animate'('1.5.0', into: 'angular/modules')
+        // 'animate.css'('1.0.0', url:'daneden/animate.css')
+        // 'angular-ui-bootstrap'('1.3.x', from:'dist') {
+        //     include 'ui-bootstrap-tpls.js'
+        // }
+        // 'bootstrap'('3.3.7') {
+        //     include 'dist/**'
+        //     exclude '**/*.min.*', '**/*.map', '**/npm.js'
+        //     eachFile { it.path -= 'dist/' }
+        // }
+
+        'bootstrap'('3.3.7') {
+        	//include '**/bootstrap.css', '**/bootstrap-theme.css'
+        	include '**/bootstrap.min.css'
+        	includeEmptyDirs = false
+        	eachFile { it.path -= 'css/' }
+        }
+        
+        //'bootstrap'('3.3.7', from:'bootstrap/ćss', into: 'bootstrap') {
+        //	include 'bootstrap.css'
+        //	include 'bootstrap-theme.css'
+        //}
+        //'jquery'('3.0.0')
+        
+        'angular'('1.5.x', into: 'angularjs') {
+            include 'angular.js'
+            include 'angular.min.js'
+        }
+        
+        'angular-resource'('1.5.x', into: 'angularjs') {
+            include 'angular-resource.js'
+            include 'angular-resource.min.js'
+        }
+        
+        //'angular-mocks'('1.5.x', into: 'angularjs') {
+        //    include 'angular-mocks.js'
+        //    include 'angular-mocks.min.js'
+        //} 
+              
+        'angular-ui-router'('0.2.18', into: 'angularjs'){
+            include 'angular-ui-router.js'
+            include 'angular-ui-router.min.js'
+        }
+        
+        //'angular-animate'('1.5.x', into: 'angularjs') {
+        //    include 'angular-animate.js'
+        //    include 'angular-animate.min.js'
+        //}
+        //'angular-cookies'('1.5.x', into: 'angularjs') {
+        //    include 'angular-cookies.js'
+        //    include 'angular-cookies.min.js'
+        //}
+        //'angular-nvd3'('1.0.x', into: 'nvd3') {
+        //	include 'angular-nvd3.js'
+        //}
+        //'nvd3'('1.8.x', into: 'nvd3') {
+        //	include 'nv.d3.js'
+        //	include 'nv.d3.css'
+        //}
+        //'d3'('3.5.17', into: 'nvd3') {
+        //	include 'd3.js'
+        //}
+    }
+}

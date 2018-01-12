@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "simplecollector.influxdb.url",
+  "type": "java.lang.String",
+  "description": "The URL used to write to influxDB"
+}]}
