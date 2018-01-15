@@ -43,7 +43,7 @@ public class PollGroup {
 	 * Set object references to null values when they are not relevant.
 	 */
 	public void cleanUp() {
-		if (!host.isEmpty())
+		if (host != null && !host.isEmpty())
 			hosts =null;
 		switch (type) {
 		case OBJECT:

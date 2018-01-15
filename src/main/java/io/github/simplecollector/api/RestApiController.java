@@ -117,6 +117,7 @@ public class RestApiController {
 		} catch (DuplicateKeyException e) {
 			throw new ApiClientException("Name " + pg.getName() + " aleady exists.");
 		} catch (Exception e) {
+			logger.error("Error creating poll group:", e);
 			throw new ApiServerException(e);
 		}
     }
@@ -135,6 +136,7 @@ public class RestApiController {
 			pg.cleanUp();
 			result = this.pgRepository.save(pg);
 		} catch (Exception e) {
+			logger.error("Error updating poll group " + id + ":", e);
 			throw new ApiServerException(e.getMessage(), e);
 		}
 		return result;
