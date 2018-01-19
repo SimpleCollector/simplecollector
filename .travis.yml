@@ -20,18 +20,20 @@ before_script:
 script:
   - ./gradlew build
 
-#before_deploy:
-#   - git config --local user.name "SimpleCollector"
-#   - git config --local user.email "35264312+SimpleCollector@users.noreply.github.com"
-#   - git tag "latest-build"
-      
-#deploy:
-#  provider: releases
-#  api_key:
-#    secure: "$GITHUB_API_KEY"
-#  file: "build/libs/simplecollector-master.jar"
-#  skip_cleanup: true
-#  overwrite: true
+before_deploy:
+   - git config --local user.name "SimpleCollector"
+   - git config --local user.email "35264312+SimpleCollector@users.noreply.github.com"
+   - git tag "latest-build"
+
+deploy:
+  provider: releases
+  api_key:
+    secure: "$GITHUB_API_KEY"
+  file: build/libs/simplecollector-master.jar
+  skip_cleanup: true
+  overwrite: true
+  on:
+    repo: SimpleCollector/simplecollector
 
 notifications:
   email:
