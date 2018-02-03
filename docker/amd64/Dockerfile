@@ -2,9 +2,7 @@ FROM openjdk:8-jre
 
 VOLUME /tmp
 
-ARG jar=app.jar
-ADD $jar app.jar
+RUN curl -L -o /app.jar https://github.com/SimpleCollector/simplecollector/releases/download/latest-build/simplecollector-latest.jar \
+ && mkdir -p html && curl -L https://github.com/SimpleCollector/simplecollector-gui/releases/download/latest-build/simplecollector-gui-dist.tgz | tar xvz -C html
 
-#RUN sh -c 'touch /app.jar'
-
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.resources.static-locations=file:/html/", "-jar","/app.jar"]

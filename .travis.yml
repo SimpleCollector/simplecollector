@@ -23,13 +23,13 @@ script:
 before_deploy:
    - git config --local user.name "SimpleCollector"
    - git config --local user.email "35264312+SimpleCollector@users.noreply.github.com"
-   - git tag "latest-build"
+   - git tag "latest"
 
 deploy:
   provider: releases
   api_key:
     secure: "$GITHUB_API_KEY"
-  file: build/libs/simplecollector-HEAD.jar
+  file: build/libs/simplecollector-latest.jar
   skip_cleanup: true
   overwrite: true
   on:
