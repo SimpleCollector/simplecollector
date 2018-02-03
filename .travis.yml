@@ -23,7 +23,7 @@ script:
 before_deploy:
    - git config --local user.name "SimpleCollector"
    - git config --local user.email "35264312+SimpleCollector@users.noreply.github.com"
-   - git tag "latest"
+   - git tag "latest-build"
 
 deploy:
   provider: releases
@@ -34,6 +34,10 @@ deploy:
   overwrite: true
   on:
     repo: SimpleCollector/simplecollector
+
+after_deploy:
+  # Trigger docker hub build
+  - curl -s -H "Content-Type: application/json" --data '{"docker_tag": "master"}' -X POST https://registry.hub.docker.com/u/simplecollector/simplecollector-app/trigger/$DOCKERHUB_TOKEN/
 
 notifications:
   email:
