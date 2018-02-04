@@ -23,7 +23,8 @@ script:
 before_deploy:
    - git config --local user.name "SimpleCollector"
    - git config --local user.email "35264312+SimpleCollector@users.noreply.github.com"
-   - git tag -f "latest-build"
+   - git tag -d "latest-build"
+   - git tag "latest-build"
 
 deploy:
   provider: releases
