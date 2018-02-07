@@ -13,17 +13,18 @@ cache:
 branches:
   only:
     - master
+    - latest-build
+    - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
 
-#before_script:
+before_script:
 #  - ./gradlew assemble
+  - git config --local user.name "SimpleCollector"
+  - git config --local user.email "35264312+SimpleCollector@users.noreply.github.com"
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then git tag -f "latest-build"; git push --tags; fi
 
 script:
+  - script:
   - ./gradlew build
-
-before_deploy:
-   - git config --local user.name "SimpleCollector"
-   - git config --local user.email "35264312+SimpleCollector@users.noreply.github.com"
-   - git tag -f "latest-build"
 
 deploy:
   provider: releases
