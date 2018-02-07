@@ -23,18 +23,18 @@ script:
 before_deploy:
    - git config --local user.name "SimpleCollector"
    - git config --local user.email "35264312+SimpleCollector@users.noreply.github.com"
-   - git tag -d "latest-build"
-   - git tag "latest-build"
+   - git tag -f "latest-build"
 
 deploy:
   provider: releases
   api_key:
     secure: "$GITHUB_API_KEY"
-  file: build/libs/simplecollector-latest.jar
+  file: build/libs/simplecollector-dist.jar
   skip_cleanup: true
   overwrite: true
   on:
     repo: SimpleCollector/simplecollector
+    tags: true
 
 after_deploy:
   # Trigger docker hub build
