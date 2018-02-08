@@ -20,7 +20,7 @@ before_script:
 #  - ./gradlew assemble
   - git config --local user.name "SimpleCollector"
   - git config --local user.email "35264312+SimpleCollector@users.noreply.github.com"
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then git tag -f "latest-build"; git push -q https://$TAG_TOKEN@github.com/SimpleCollector/simplecollector --tags; fi
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then git tag -f "latest-build"; git push -q --force https://$TAG_TOKEN@github.com/SimpleCollector/simplecollector tag latest-build; fi
 
 script:
   - script:
