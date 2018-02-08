@@ -23,7 +23,6 @@ before_script:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then git tag -f "latest-build"; git push -q --force https://$TAG_TOKEN@github.com/SimpleCollector/simplecollector tag latest-build; fi
 
 script:
-  - script:
   - ./gradlew build
 
 deploy:
