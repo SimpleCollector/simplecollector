@@ -61,6 +61,7 @@ public class RestApiController {
 		
         return result;
     }	
+
 	
 	// -------------------------------
 	//  List operations
@@ -105,6 +106,7 @@ public class RestApiController {
 		return res;
 	}
 
+	
 	// -------------------------------
 	//  PollGroup CRUD operations
 	// -------------------------------
@@ -151,5 +153,101 @@ public class RestApiController {
 		}
 		return true;
     }
+
 	
+	// -------------------------------
+	//  HostGroup CRUD operations
+	// -------------------------------
+
+	@PostMapping("/config/hostgroup")
+    public HostGroup createHostgroup(@RequestBody HostGroup hg) {
+		try {
+			hg.cleanUp();
+			return this.hgRepository.save(hg);
+		} catch (DuplicateKeyException e) {
+			throw new ApiClientException("Name " + hg.getName() + " aleady exists.");
+		} catch (Exception e) {
+			logger.error("Error creating host group:", e);
+			throw new ApiServerException(e);
+		}
+    }
+
+	@GetMapping("/config/hostgroup/{id}")
+    public HostGroup getHostgroupById(@PathVariable("id") String id) {
+		return hgRepository.findOne(id);
+    }
+	
+	@PutMapping("/config/hostgroup/{id}")
+	public HostGroup updateHostgroupById(@PathVariable("id") String id, @RequestBody HostGroup hg) {
+		HostGroup result = null;
+		if (!hg.getName().equals(id))
+			throw new ApiClientException("Id in url not equal to id in body");
+		try {
+			hg.cleanUp();
+			result = this.hgRepository.save(hg);
+		} catch (Exception e) {
+			logger.error("Error updating host group " + id + ":", e);
+			throw new ApiServerException(e.getMessage(), e);
+		}
+		return result;
+    }
+		
+	@DeleteMapping("/config/hostgroup/{id}")
+    public Boolean deleteHostgroupById(@PathVariable("id") String id) {
+		try {
+			pgRepository.delete(id);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+    }
+
+	
+	// -------------------------------
+	//  SnmpConfigGroup CRUD operations
+	// -------------------------------
+
+	@PostMapping("/config/snmpconfiggroup")
+    public SnmpConfigGroup createSnmpconfiggroup(@RequestBody SnmpConfigGroup cfg) {
+		try {
+			cfg.cleanUp();
+			return this.cfgRepository.save(cfg);
+		} catch (DuplicateKeyException e) {
+			throw new ApiClientException("Name " + cfg.getName() + " aleady exists.");
+		} catch (Exception e) {
+			logger.error("Error creating host group:", e);
+			throw new ApiServerException(e);
+		}
+    }
+
+	@GetMapping("/config/snmpconfiggroup/{id}")
+    public SnmpConfigGroup getSnmpconfiggroupById(@PathVariable("id") String id) {
+		return cfgRepository.findOne(id);
+    }
+	
+	@PutMapping("/config/snmpconfiggroup/{id}")
+	public SnmpConfigGroup updateSnmpconfiggroupById(@PathVariable("id") String id, @RequestBody SnmpConfigGroup cfg) {
+		SnmpConfigGroup result = null;
+		if (!cfg.getName().equals(id))
+			throw new ApiClientException("Id in url not equal to id in body");
+		try {
+			cfg.cleanUp();
+			result = this.cfgRepository.save(cfg);
+		} catch (Exception e) {
+			logger.error("Error updating host group " + id + ":", e);
+			throw new ApiServerException(e.getMessage(), e);
+		}
+		return result;
+    }
+
+	@DeleteMapping("/config/snmpconfiggroup/{id}")
+    public Boolean deleteSnmpconfiggroupById(@PathVariable("id") String id) {
+		try {
+			pgRepository.delete(id);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+    }
+
 }

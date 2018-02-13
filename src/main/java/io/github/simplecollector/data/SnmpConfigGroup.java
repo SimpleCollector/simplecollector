@@ -44,4 +44,9 @@ public class SnmpConfigGroup {
 		this.comsettings = comsettings;
 	}
 
+	public void cleanUp() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

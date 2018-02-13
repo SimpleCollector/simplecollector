@@ -37,4 +37,9 @@ public class HostGroup {
 		this.hosts = hosts;
 	}
 
+	public void cleanUp() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
