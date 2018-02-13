@@ -81,6 +81,15 @@ public class RestApiController {
 		return result;
     }
 
+	@GetMapping("/status")
+    public Map<String, Object> getStatus() {
+        Map<String, Object> result = new LinkedHashMap<String, Object>(3);
+		result.put("updating", queue.getIsUpdating());
+		result.put("qsize", queue.size());
+		result.put("queue", queue.listItemIds());
+		return result;
+    }
+	
 	@GetMapping("/status/queue")
     public List<String> listQueueItems() {
         return queue.listItemIds();
